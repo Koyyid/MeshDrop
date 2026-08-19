@@ -1,0 +1,19 @@
+{
+  "name": "meshdrop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-device file sharing through WebRTC DataChannels.",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server/src/index.js",
+    "start": "node server/src/index.js",
+    "test": "node --test tests/**/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}
