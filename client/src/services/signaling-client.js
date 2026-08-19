@@ -1,6 +1,6 @@
-import { io } from "/socket.io/socket.io.esm.min.js";
+import { io } from "https://cdn.socket.io/4.8.3/socket.io.esm.min.js";
 import { createAppError } from "../i18n/i18n.js";
-import { SIGNAL_EVENTS } from "/shared/protocol.js";
+import { SIGNAL_EVENTS } from "../../shared/protocol.js";
 
 /** Adapter Socket.IO untuk room dan relay negosiasi WebRTC. */
 export class SignalingClient {

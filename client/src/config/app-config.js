@@ -1,6 +1,8 @@
+const configuredSignalingUrl = globalThis.MESHDROP_CONFIG?.signalingUrl?.trim();
+
 /** Konfigurasi runtime browser; TURN/STUN produksi akan ditambahkan di tahap koneksi. */
 export const appConfig = Object.freeze({
-  signalingUrl: window.location.origin,
+  signalingUrl: configuredSignalingUrl?.replace(/\/$/, "") || window.location.origin,
   rtcConfiguration: {
     // STUN publik cukup untuk development. Tambahkan TURN berautentikasi di production.
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }]

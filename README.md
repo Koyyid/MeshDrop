@@ -36,6 +36,23 @@ Salin `.env.example` menjadi `.env` dan isi environment melalui shell/deployment
 | `CLIENT_ORIGIN` | `http://localhost:3000` | Origin yang diizinkan Socket.IO saat frontend di-host terpisah. |
 | `MAX_DEVICES_PER_ROOM` | `24` | Batas anggota sebuah room pada satu proses server. |
 
+## GitHub Pages
+
+Workflow [deploy-pages.yml](.github/workflows/deploy-pages.yml) menerbitkan frontend statis setiap ada push ke branch `main`. Setelah deployment GitHub selesai, halaman tersedia di:
+
+```text
+https://koyyid.github.io/MeshDrop/
+```
+
+GitHub Pages **tidak menjalankan** signaling server Node.js. Agar transfer file berfungsi pada halaman tersebut:
+
+1. Deploy folder `server/` ke host Node.js/HTTPS terpisah (misalnya VPS, Render, Railway, atau Fly.io).
+2. Konfigurasikan host tersebut dengan `CLIENT_ORIGIN=https://koyyid.github.io` dan reverse proxy HTTPS/WSS.
+3. Di repository GitHub, buka **Settings → Secrets and variables → Actions → Variables**, lalu tambahkan `MESHDROP_SIGNALING_URL` berisi URL publik server tersebut, misalnya `https://signal.example.com`.
+4. Push ulang ke `main` atau jalankan workflow **Deploy GitHub Pages** secara manual.
+
+Tanpa `MESHDROP_SIGNALING_URL`, halaman Pages tetap terbuka tetapi tidak dapat bergabung ke room karena tidak ada signaling server pada domain GitHub Pages.
+
 ## Struktur project
 
 ```text

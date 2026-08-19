@@ -1,4 +1,4 @@
-import { DATA_CHANNEL_MESSAGES, LIMITS } from "/shared/protocol.js";
+import { DATA_CHANNEL_MESSAGES, LIMITS } from "../../shared/protocol.js";
 import { createAppError } from "../i18n/i18n.js";
 
 /** Menangani metadata, chunk, backpressure, progres, dan penerimaan file DataChannel. */
