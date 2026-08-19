@@ -44,12 +44,13 @@ Workflow [deploy-pages.yml](.github/workflows/deploy-pages.yml) menerbitkan fron
 https://koyyid.github.io/MeshDrop/
 ```
 
-GitHub Pages **tidak menjalankan** signaling server Node.js. Agar transfer file berfungsi pada halaman tersebut:
+GitHub Pages **tidak menjalankan** signaling server Node.js. Agar transfer file berfungsi pada halaman tersebut, deploy backend dengan Render:
 
-1. Deploy folder `server/` ke host Node.js/HTTPS terpisah (misalnya VPS, Render, Railway, atau Fly.io).
-2. Konfigurasikan host tersebut dengan `CLIENT_ORIGIN=https://koyyid.github.io` dan reverse proxy HTTPS/WSS.
-3. Di repository GitHub, buka **Settings → Secrets and variables → Actions → Variables**, lalu tambahkan `MESHDROP_SIGNALING_URL` berisi URL publik server tersebut, misalnya `https://signal.example.com`.
-4. Push ulang ke `main` atau jalankan workflow **Deploy GitHub Pages** secara manual.
+1. Masuk ke [Render](https://render.com/), pilih **New → Blueprint**, lalu hubungkan repository `Koyyid/MeshDrop`.
+2. Render akan membaca [render.yaml](render.yaml) dan membuat web service `meshdrop-signaling`. Biarkan `CLIENT_ORIGIN=https://koyyid.github.io` dan tunggu deploy selesai.
+3. Salin URL HTTPS service Render, misalnya `https://meshdrop-signaling.onrender.com`.
+4. Di repository GitHub, buka **Settings → Secrets and variables → Actions → Variables**, lalu tambahkan `MESHDROP_SIGNALING_URL` dengan URL Render tersebut.
+5. Jalankan ulang workflow **Deploy GitHub Pages** atau push commit baru ke `main`.
 
 Tanpa `MESHDROP_SIGNALING_URL`, halaman Pages tetap terbuka tetapi tidak dapat bergabung ke room karena tidak ada signaling server pada domain GitHub Pages.
 

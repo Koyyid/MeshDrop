@@ -26,6 +26,6 @@ app.use("/shared", express.static(sharedDirectory));
 
 registerSignalingHandlers(io, { logger, roomRegistry });
 
-httpServer.listen(env.port, () => {
+httpServer.listen(env.port, "0.0.0.0", () => {
   logger.info(`MeshDrop signaling server berjalan di http://localhost:${env.port}`);
 });
