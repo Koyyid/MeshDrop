@@ -33,7 +33,7 @@ Salin `.env.example` menjadi `.env` dan isi environment melalui shell/deployment
 | Environment | Default | Fungsi |
 | --- | --- | --- |
 | `PORT` | `3000` | Port HTTP dan Socket.IO. |
-| `CLIENT_ORIGIN` | `http://localhost:3000` | Origin yang diizinkan Socket.IO saat frontend di-host terpisah. |
+| `CLIENT_ORIGIN` | `http://localhost:3000` | Origin yang diizinkan Socket.IO saat frontend di-host terpisah. Gunakan koma untuk beberapa origin. |
 | `MAX_DEVICES_PER_ROOM` | `24` | Batas anggota sebuah room pada satu proses server. |
 
 ## GitHub Pages
@@ -53,6 +53,35 @@ GitHub Pages **tidak menjalankan** signaling server Node.js. Agar transfer file 
 5. Jalankan ulang workflow **Deploy GitHub Pages** atau push commit baru ke `main`.
 
 Tanpa `MESHDROP_SIGNALING_URL`, halaman Pages tetap terbuka tetapi tidak dapat bergabung ke room karena tidak ada signaling server pada domain GitHub Pages.
+
+### Uji gratis tanpa kartu: Cloudflare Quick Tunnel
+
+Untuk menguji GitHub Pages sekarang juga tanpa akun hosting atau kartu kredit, pakai tunnel sementara dari komputer sendiri. Cloudflare menyediakan Quick Tunnel gratis tanpa akun; URL berubah saat tunnel dihentikan dan hanya untuk pengujian.
+
+1. Jalankan signaling server dengan origin GitHub Pages di PowerShell:
+
+   ```powershell
+   $env:CLIENT_ORIGIN = "http://localhost:3000,https://koyyid.github.io"
+   npm run dev
+   ```
+
+2. Di terminal PowerShell lain, jalankan Cloudflare Quick Tunnel:
+
+   ```powershell
+   cloudflared tunnel --url http://localhost:3000
+   ```
+
+   Jika `cloudflared` belum terpasang, ikuti [panduan instalasi Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/). Perintah tersebut mencetak URL seperti `https://random-name.trycloudflare.com`.
+
+3. Buka GitHub Pages dengan URL tunnel itu sebagai parameter `signal` di semua device, misalnya:
+
+   ```text
+   https://koyyid.github.io/MeshDrop/?signal=https%3A%2F%2Frandom-name.trycloudflare.com
+   ```
+
+4. Join room dengan room code yang sama. Biarkan kedua terminal tetap berjalan selama pengujian.
+
+Quick Tunnel bersifat sementara dan tidak cocok untuk deployment produksi. [Dokumentasi Cloudflare](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/) menjelaskan bahwa tunnel ini gratis, tanpa akun, serta membuat subdomain `trycloudflare.com` acak.
 
 ## Struktur project
 
